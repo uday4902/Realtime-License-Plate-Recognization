@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 License Plate Detection 🕵️‍♂️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .main {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form, .image-display {
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>License Plate Detection</h1>
+        <form method="POST" action="{% url 'output' %}" enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            <label for="formFileMd">Upload an Image of a Vehicle:</label>
+            <input class="form-control form-control-md" name="image" id="formFileMd" type="file" accept="image/*" required />
+            <br>
+            <input class="button" type="submit" value="Detect Number Plate">
+        </form>
+        <div>
+            <a class="button" href="{% url 'live' %}">Live Capture</a>
+        </div>
+        <div class="image-display">
+            {% if plate_detected %}
+                <img src="media/img/images.jpg?{{ timestamp }}" alt="Detected License Plate" />
+                <p>Extracted Text: {{ extracted_text }}</p>
+            {% else %}
+                <p>License plate not detected.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
